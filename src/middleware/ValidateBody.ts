@@ -1,6 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { User as UserType } from "@prisma/client";
-import { UserSchema, UserSchemaUpdate } from "./../models/User";
+import { User as UserType } from '@prisma/client';
+import { NextFunction, Request, Response } from 'express';
+
+import {
+  UserSchema,
+  UserSchemaUpdate
+} from './../models/User';
 export class ValidateBody {
   static async CreateUser(
     request: Request,
@@ -10,7 +14,9 @@ export class ValidateBody {
     const value: UserType = request.body;
     const { error } = UserSchema.validate(value);
     if (error) {
-      return response.status(400).json({ message: error.message });
+      return response
+        .status(400)
+        .json({ message: error.message });
     }
     return next();
   }
@@ -22,7 +28,9 @@ export class ValidateBody {
     const value: UserType = request.body;
     const { error } = UserSchemaUpdate.validate(value);
     if (error) {
-      return response.status(400).json({ message: error.message });
+      return response
+        .status(400)
+        .json({ message: error.message });
     }
     return next();
   }
