@@ -8,69 +8,89 @@ class User {
     request: Request,
     response: Response
   ) {
-    const {
-      email,
-      firstName,
-      lastName,
-      password
-    }: UserType = request.body;
-    const encryptedPassword = await bcrypt.hash(
-      password,
-      10
-    );
-    const user = await prismaClient.user.create({
-      data: {
+    try {
+      const {
         email,
         firstName,
         lastName,
-        password: encryptedPassword
-      }
-    });
-    return response.json(user);
+        password
+      }: UserType = request.body;
+      const encryptedPassword = await bcrypt.hash(
+        password,
+        10
+      );
+      const user = await prismaClient.user.create({
+        data: {
+          email,
+          firstName,
+          lastName,
+          password: encryptedPassword
+        }
+      });
+      return response.json(user);
+    } catch (error) {
+      response.json({ error });
+    }
   }
   static async findOne(
     request: Request,
     response: Response
   ) {
-    const { id } = request.params;
-    const user = await prismaClient.user.findUnique({
-      where: { id }
-    });
-    return response.json(user);
+    try {
+      const { id } = request.params;
+      const user = await prismaClient.user.findUnique({
+        where: { id }
+      });
+      return response.json(user);
+    } catch (error) {
+      return response.json({ error });
+    }
   }
   static async findAll(
     request: Request,
     response: Response
   ) {
-    const users = await prismaClient.user.findMany();
-    return response.json(users);
+    try {
+      const users = await prismaClient.user.findMany();
+      return response.json(users);
+    } catch (error) {
+      return response.json({ error });
+    }
   }
   static async update(
     request: Request,
     response: Response
   ) {
-    const { id } = request.params;
-    const {
-      email,
-      firstName,
-      lastName,
-      password
-    }: UserType = request.body;
-    const user = await prismaClient.user.update({
-      where: { id },
-      data: { email, firstName, lastName, password }
-    });
-    return response.json(user);
+    try {
+      const { id } = request.params;
+      const {
+        email,
+        firstName,
+        lastName,
+        password
+      }: UserType = request.body;
+      const user = await prismaClient.user.update({
+        where: { id },
+        data: { email, firstName, lastName, password }
+      });
+      return response.json(user);
+    } catch (error) {
+      return response.json({ error });
+    }
   }
   static async delete(
     request: Request,
     response: Response
   ) {
-    const { id } = request.params;
-    const user = await prismaClient.user.delete({
-      where: { id }
-    });
-    return response.json(user);
+    try {
+      const { id } = request.params;
+      const user = await prismaClient.user.delete({
+        where: { id }
+      });
+      return response.json(user);
+    } catch (error) {
+      return response.json({ error });
+    }
   }
 }
 export { User };
