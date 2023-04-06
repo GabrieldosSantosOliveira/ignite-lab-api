@@ -58,11 +58,10 @@ class Auth {
       if (Bearer !== 'Bearer') {
         return response.status(401).json({ message: 'Token malformatted' });
       }
-      jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+      jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
         if (err) {
           return response.status(401).json({ message: 'Token invalid' });
         }
-        console.log(decoded);
         return next();
       });
     } catch (error) {
